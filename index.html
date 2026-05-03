@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tomáš — System Dev</title>
+    <title>Tomáš — System Developer</title>
     
-    <!-- Google Fonts: Inter (Neo-grotesk) & JetBrains Mono (Monospaced) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -14,19 +13,24 @@
     <style>
         /* === CSS VARIABLES === */
         :root {
-            --bg: #0a0a0a;
-            --surface: #000000;
+            --bg: #000000;
+            --surface: #0a0a0a;
+            --surface-hover: #121212;
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
-            --border: #222222;
-            --border-hover: #333333;
+            --text-faint: #52525b;
+            --border: #27272a;
+            --border-hover: #3f3f46;
+            --accent: #ffffff;
             
-            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
             
-            --radius-sm: 2px;
-            --nav-height: 60px;
-            --container-width: 1040px;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --radius-sm: 4px;
+            --nav-height: 64px;
+            --container-width: 900px; /* Užší pro lepší čitelnost jako na moderních webech */
         }
 
         /* === RESET & BASE === */
@@ -38,7 +42,7 @@
 
         ::selection {
             background-color: var(--text-main);
-            color: var(--surface);
+            color: var(--bg);
         }
 
         body {
@@ -61,30 +65,59 @@
             color: var(--text-muted);
         }
 
-        h1, h2, h3, strong {
+        h1, h2, h3, h4, strong {
             color: var(--text-main);
             font-weight: 500;
         }
 
-        /* === TYPOGRAPHY === */
-        .mono {
-            font-family: var(--font-mono);
+        /* === TYPOGRAPHY & UTILS === */
+        .mono { font-family: var(--font-mono); }
+        .text-sm { font-size: 0.875rem; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+
+        .icon {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .icon-sm {
+            width: 14px;
+            height: 14px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-        }
-
-        .text-sm {
-            font-size: 0.85rem;
-        }
-
-        .section-label {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
+            color: var(--text-main);
             margin-bottom: 2rem;
-            display: block;
+            background: var(--surface);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.15rem 0.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            color: var(--text-main);
+            white-space: nowrap;
         }
 
         /* === LAYOUT & GRID === */
@@ -95,12 +128,7 @@
         }
 
         section {
-            padding: 8rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        section:last-of-type {
-            border-bottom: none;
+            padding: 6rem 0;
         }
 
         /* === HEADER / NAV === */
@@ -109,7 +137,7 @@
             top: 0;
             z-index: 100;
             height: var(--nav-height);
-            background-color: rgba(10, 10, 10, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
@@ -125,161 +153,201 @@
         }
 
         .nav-logo {
-            font-size: 1rem;
             font-weight: 600;
             letter-spacing: -0.02em;
-            color: var(--text-main);
         }
 
-        /* === HERO / MANIFEST === */
+        /* === HERO === */
         .hero {
-            padding: 10rem 0 6rem 0;
+            padding: 8rem 0 4rem 0;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            line-height: 1.05;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
             letter-spacing: -0.04em;
             font-weight: 600;
-            max-width: 900px;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .hero p {
             font-size: 1.125rem;
-            max-width: 600px;
-        }
-
-        /* === PROJECTS (SPEC SHEETS) === */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-        }
-
-        .spec-card {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            transition: border-color 0.2s ease;
-        }
-
-        .spec-card:hover {
-            border-color: var(--border-hover);
-        }
-
-        /* Image embedding specific styling */
-        .spec-image-wrapper {
-            margin: -2rem -2rem 2rem -2rem;
-            border-bottom: 1px solid var(--border);
-            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-            overflow: hidden;
-            background-color: #050505; /* fallback for transparent images */
-        }
-
-        .spec-image-wrapper img {
-            display: block;
-            width: 100%;
-            height: auto;
-            filter: contrast(1.05); /* Lehký tech-tuning obrazu */
-        }
-
-        .spec-header {
+            max-width: 650px;
             margin-bottom: 2rem;
         }
 
-        .spec-header h3 {
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--text-main);
+            color: var(--bg);
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary:hover { opacity: 0.9; color: var(--bg); }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            color: var(--text-main);
+            padding: 0.6rem 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .btn-secondary:hover { background: var(--surface); }
+
+        /* === PROJECTS === */
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .project-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .project-img {
+            width: 100%;
+            border-bottom: 1px solid var(--border);
+            background-color: #050505;
+        }
+
+        .project-img img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .project-content {
+            padding: 2.5rem;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
             letter-spacing: -0.02em;
         }
 
-        .spec-header p {
-            font-size: 0.95rem;
+        .project-desc {
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            line-height: 1.7;
         }
 
-        .spec-table {
-            width: 100%;
-            margin-top: auto;
-            border-top: 1px solid var(--border);
-        }
-
-        .spec-row {
-            display: flex;
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
-            align-items: baseline;
-        }
-
-        .spec-row:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .spec-key {
-            width: 140px;
-            flex-shrink: 0;
-            color: var(--text-muted);
-            padding-right: 1rem;
-        }
-
-        .spec-val {
-            color: var(--text-main);
-            font-size: 0.95rem;
-        }
-
-        .spec-action {
+        /* Modern Feature Grid inside Projects */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             margin-top: 2rem;
-            padding-top: 1.5rem;
+            padding-top: 2rem;
             border-top: 1px solid var(--border);
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
             display: flex;
             align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            flex-shrink: 0;
         }
 
-        .spec-action a {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+        .feature-text h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
         }
 
-        .spec-action a:hover {
-            color: #fff;
-            text-shadow: 0 0 8px rgba(255,255,255,0.3);
+        .feature-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
         }
 
         /* === TECH STACK === */
-        .stack-table {
-            width: 100%;
-            border-top: 1px solid var(--border);
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
-        .stack-row {
-            display: grid;
-            grid-template-columns: 250px 1fr;
+        .tech-card {
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface);
+        }
+
+        .tech-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            font-weight: 500;
+            padding-bottom: 1rem;
             border-bottom: 1px solid var(--border);
         }
 
-        .stack-category {
-            padding: 1.5rem 1rem 1.5rem 0;
-            color: var(--text-muted);
-            border-right: 1px solid var(--border);
+        .tech-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
-        .stack-items {
-            padding: 1.5rem 0 1.5rem 2rem;
-            color: var(--text-main);
+        .tech-item {
             display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
         }
 
         /* === FOOTER === */
         footer {
             border-top: 1px solid var(--border);
             padding: 3rem 0;
+            background: var(--surface);
         }
 
         .footer-content {
@@ -288,35 +356,10 @@
             align-items: center;
         }
 
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        /* === RESPONSIVE DESIGN === */
+        /* === RESPONSIVE === */
         @media (max-width: 768px) {
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stack-row {
-                grid-template-columns: 1fr;
-            }
-
-            .stack-category {
-                padding: 1rem 0 0.5rem 0;
-                border-right: none;
-            }
-
-            .stack-items {
-                padding: 0 0 1rem 0;
-            }
-
-            .spec-row {
-                flex-direction: column;
-                gap: 0.25rem;
-            }
-
+            .hero { padding: 4rem 0; }
+            .project-content { padding: 1.5rem; }
             .footer-content {
                 flex-direction: column;
                 align-items: flex-start;
@@ -330,8 +373,14 @@
     <!-- NAV -->
     <header class="nav-header">
         <div class="container nav-content">
-            <div class="nav-logo">TOMÁŠ</div>
-            <div class="mono text-sm">STATUS: STUDENT / SYSTEM DEV</div>
+            <div class="nav-logo flex items-center gap-2">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"></path></svg>
+                TOMÁŠ
+            </div>
+            <div class="mono text-sm flex items-center gap-2">
+                <span style="display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%;"></span>
+                SYSTEM DEV
+            </div>
         </div>
     </header>
 
@@ -339,71 +388,113 @@
         <!-- HERO -->
         <section class="hero">
             <div class="container">
-                <h1>Building core systems, logic, and low-level abstractions.</h1>
-                <p>Zaměření na Rust, Linux internals a vibe coding. Vytváření architektur od naprostých základů s důrazem na absolutní kontrolu nad pamětí, nulovou abstrakci a maximální výkon.</p>
+                <h1>Building core systems & <br>low-level abstractions.</h1>
+                <p>Zaměřuji se na vývoj v <strong>Rustu</strong>, architekturu operačních systémů (Linux) a tvorbu nástrojů od samotných základů s absolutní kontrolou nad pamětí a maximálním výkonem.</p>
+                <div class="hero-actions">
+                    <a href="#projects" class="btn-primary">
+                        Prohlédnout projekty
+                        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                    </a>
+                    <a href="#stack" class="btn-secondary">
+                        Tech Stack
+                    </a>
+                </div>
             </div>
         </section>
 
         <!-- PROJECTS -->
         <section id="projects">
             <div class="container">
-                <span class="section-label">01 // Specification Sheets</span>
+                <div class="section-tag mono">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                    Vybrané Projekty
+                </div>
                 
                 <div class="projects-grid">
                     
-                    <!-- Spec Card 1: Axis -->
-                    <div class="spec-card">
-                        <div class="spec-header">
-                            <h3>Axis (ax) Language</h3>
-                            <p>Self-hosted nízkoúrovňový programovací jazyk.</p>
+                    <!-- PROJECT 1: NeoFM -->
+                    <div class="project-card">
+                        <div class="project-img">
+                            <img src="https://private-user-images.githubusercontent.com/281020145/586823343-83f51e02-c2e1-4141-ae52-982a64927d86.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Nzc4MzMzMzYsIm5iZiI6MTc3NzgzMzAzNiwicGF0aCI6Ii8yODEwMjAxNDUvNTg2ODIzMzQzLTgzZjUxZTAyLWMyZTEtNDE0MS1hZTUyLTk4MmE2NDkyN2Q4Ni5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwNTAzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDUwM1QxODMwMzZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wYmZlMmNlMTI2YmY2YWMxMzcxOGM5N2Q4N2U1NmY2ZWQ2MTAzZTQ2YmU3MzI2NWZlNzIzZGJkOTY3ZTBkYWVlJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.N-iAmthhMoQO478VcN6THQDU8Bdih5lZmOgC2087hAI" alt="Neo File Manager TUI">
                         </div>
-                        <div class="spec-table">
-                            <div class="spec-row">
-                                <div class="spec-key mono text-sm">Vývoj</div>
-                                <div class="spec-val">Původně napsán v Rustu, v současnosti plně self-hosted (napsán sám v sobě).</div>
+                        <div class="project-content">
+                            <div class="project-header">
+                                <div>
+                                    <h3 class="project-title">Neo File Manager (nfm)</h3>
+                                    <div class="flex gap-2">
+                                        <span class="badge mono">Rust</span>
+                                        <span class="badge mono">Linux</span>
+                                        <span class="badge mono">Windows</span>
+                                    </div>
+                                </div>
+                                <a href="https://github.com/tomas-gihub27/nfm" target="_blank" rel="noopener noreferrer" class="btn-secondary mono">
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                    GitHub
+                                </a>
                             </div>
-                            <div class="spec-row">
-                                <div class="spec-key mono text-sm">Jádro</div>
-                                <div class="spec-val">Striktní minimalismus. Jazyk umí pouze práci s pamětí a základní syscally (print atd.).</div>
-                            </div>
-                            <div class="spec-row">
-                                <div class="spec-key mono text-sm">Modularita</div>
-                                <div class="spec-val">Funguje na principu knihoven. Kompilátor extrahuje exaktně jen ty funkce, které projekt vyžaduje.</div>
-                            </div>
-                            <div class="spec-row">
-                                <div class="spec-key mono text-sm">Výstup</div>
-                                <div class="spec-val">Generuje extrémně rychlé a malé binárky s absolutně nulovými závislostmi.</div>
+                            <p class="project-desc">
+                                NeoFM je moderní TUI správce souborů napsaný v Rustu. Je bleskově rychlý a navržený tak, aby byl jednoduše ovladatelný pouze pomocí šipek – při procházení složek téměř nemusíte pohnout rukou. Celý vzhled je velmi moderní, podporuje práci ve více kartách a obsahuje přehled typu "Tento počítač" pro rychlý přístup k diskům. Je to nástroj, který dennodenně používám a extrémně mi usnadnil život.
+                            </p>
+
+                            <div class="feature-grid">
+                                <div class="feature-item">
+                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></div>
+                                    <div class="feature-text">
+                                        <h4>Profesionální Editor</h4>
+                                        <p>Integrovaný textový editor se zvýrazněním syntaxe, skoky na konec řádku a dalšími profi funkcemi.</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></div>
+                                    <div class="feature-text">
+                                        <h4>Pokročilé Nástroje</h4>
+                                        <p>Nativní podpora pro kompresi archivů, wget pro stahování, rychlý git clone a úpravy práv (chmod).</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+                                    <div class="feature-text">
+                                        <h4>Bezpečnost</h4>
+                                        <p>Vestavěné šifrování souborů přímo v rozhraní správce bez nutnosti externích nástrojů.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Spec Card 2: NeoFM -->
-                    <div class="spec-card">
-                        <div class="spec-image-wrapper">
-                            <img src="https://private-user-images.githubusercontent.com/281020145/586823343-83f51e02-c2e1-4141-ae52-982a64927d86.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Nzc4MzMzMzYsIm5iZiI6MTc3NzgzMzAzNiwicGF0aCI6Ii8yODEwMjAxNDUvNTg2ODIzMzQzLTgzZjUxZTAyLWMyZTEtNDE0MS1hZTUyLTk4MmE2NDkyN2Q4Ni5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwNTAzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDUwM1QxODMwMzZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wYmZlMmNlMTI2YmY2YWMxMzcxOGM5N2Q4N2U1NmY2ZWQ2MTAzZTQ2YmU3MzI2NWZlNzIzZGJkOTY3ZTBkYWVlJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.N-iAmthhMoQO478VcN6THQDU8Bdih5lZmOgC2087hAI" alt="Neo File Manager TUI Interface" loading="lazy">
-                        </div>
-                        <div class="spec-header">
-                            <h3>Neo File Manager (nfm)</h3>
-                            <p>High-performance TUI file manager.</p>
-                        </div>
-                        <div class="spec-table">
-                            <div class="spec-row">
-                                <div class="spec-key mono text-sm">Technologie</div>
-                                <div class="spec-val">Rust</div>
+                    <!-- PROJECT 2: Axis -->
+                    <div class="project-card">
+                        <div class="project-content">
+                            <div class="project-header">
+                                <div>
+                                    <h3 class="project-title">Axis (ax) Language</h3>
+                                    <div class="flex gap-2">
+                                        <span class="badge mono">Self-Hosted</span>
+                                        <span class="badge mono">Compiler Design</span>
+                                        <span class="badge mono">Low-Level</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="spec-row">
-                                <div class="spec-key mono text-sm">I/O Model</div>
-                                <div class="spec-val">Asynchronous I/O</div>
+                            <p class="project-desc">
+                                Nízkoúrovňový programovací jazyk původně vytvořený v Rustu, dnes plně self-hosted (napsán sám v sobě). Jazyk funguje na striktním principu knihoven – sám o sobě neumí nic jiného než základní práci s pamětí a volání systémových funkcí (syscalls, print).
+                            </p>
+
+                            <div class="feature-grid">
+                                <div class="feature-item">
+                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
+                                    <div class="feature-text">
+                                        <h4>Smart Kompilátor</h4>
+                                        <p>Při kompilaci si překladač z knihoven vytáhne exaktně jen ty funkce, které kód reálně potřebuje.</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+                                    <div class="feature-text">
+                                        <h4>Zero Dependency</h4>
+                                        <p>Výstupem jsou extrémně malé a bleskově rychlé binární soubory s absolutně nulovými závislostmi.</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="spec-row">
-                                <div class="spec-key mono text-sm">Architektura</div>
-                                <div class="spec-val">Zero-overhead abstraction pro maximální propustnost na úrovni souborového systému.</div>
-                            </div>
-                        </div>
-                        <div class="spec-action">
-                            <a href="https://github.com/tomas-gihub27/nfm" target="_blank" rel="noopener noreferrer" class="mono text-sm">
-                                [ REPOSITORY ↗ ]
-                            </a>
                         </div>
                     </div>
 
@@ -414,32 +505,46 @@
         <!-- TECH STACK -->
         <section id="stack">
             <div class="container">
-                <span class="section-label">02 // Technical Capabilities</span>
+                <div class="section-tag mono">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    Technický Stack
+                </div>
                 
-                <div class="stack-table">
-                    <div class="stack-row">
-                        <div class="stack-category mono text-sm">Systems / Languages</div>
-                        <div class="stack-items">
-                            <span>Rust</span>
-                            <span>C</span>
-                            <span>Assembly (x86_64)</span>
+                <div class="tech-grid">
+                    <!-- Card 1 -->
+                    <div class="tech-card">
+                        <div class="tech-card-header mono">
+                            <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                            Core Languages
+                        </div>
+                        <div class="tech-list mono text-sm">
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg> Rust</div>
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg> C</div>
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg> Assembly (x86_64)</div>
                         </div>
                     </div>
-                    <div class="stack-row">
-                        <div class="stack-category mono text-sm">Core Environment</div>
-                        <div class="stack-items">
-                            <span>Linux Internals</span>
-                            <span>OS Architecture</span>
-                            <span>POSIX API</span>
+                    <!-- Card 2 -->
+                    <div class="tech-card">
+                        <div class="tech-card-header mono">
+                            <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                            Systems / OS
+                        </div>
+                        <div class="tech-list mono text-sm">
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg> Linux Internals</div>
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg> OS Architecture</div>
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg> POSIX API</div>
                         </div>
                     </div>
-                    <div class="stack-row">
-                        <div class="stack-category mono text-sm">Tooling / Scripting</div>
-                        <div class="stack-items">
-                            <span>Bash</span>
-                            <span>Make</span>
-                            <span>Git CLI</span>
-                            <span>Vim / Vibe Coding</span>
+                    <!-- Card 3 -->
+                    <div class="tech-card">
+                        <div class="tech-card-header mono">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"></path></svg>
+                            Tooling
+                        </div>
+                        <div class="tech-list mono text-sm">
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Bash / Scripting</div>
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Make / Build Tools</div>
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Git & Vim</div>
                         </div>
                     </div>
                 </div>
@@ -450,10 +555,19 @@
     <!-- FOOTER -->
     <footer>
         <div class="container footer-content">
-            <div class="mono text-sm">© 2026 TOMÁŠ. VŠECHNA PRÁVA VYHRAZENA.</div>
-            <div class="footer-links mono text-sm">
-                <a href="#">GITHUB</a>
-                <a href="#">EMAIL</a>
+            <div class="mono text-sm flex items-center gap-2">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M14.83 14.83a4 4 0 1 1 0-5.66"></path></svg>
+                2026 TOMÁŠ.
+            </div>
+            <div class="flex gap-4 mono text-sm">
+                <a href="#" class="flex items-center gap-2">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    GitHub
+                </a>
+                <a href="#" class="flex items-center gap-2">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    E-mail
+                </a>
             </div>
         </div>
     </footer>
