@@ -18,19 +18,17 @@
             --surface-hover: #121212;
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
-            --text-faint: #52525b;
             --border: #27272a;
-            --border-hover: #3f3f46;
-            --accent: #ffffff;
+            --border-glow: rgba(255, 255, 255, 0.1);
             
             --font-sans: 'Inter', system-ui, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
             
-            --radius-lg: 12px;
-            --radius-md: 8px;
-            --radius-sm: 4px;
-            --nav-height: 64px;
-            --container-width: 900px; /* Užší pro lepší čitelnost jako na moderních webech */
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 6px;
+            --nav-height: 70px;
+            --container-width: 960px;
         }
 
         /* === RESET & BASE === */
@@ -39,6 +37,8 @@
             margin: 0;
             padding: 0;
         }
+
+        html { scroll-behavior: smooth; }
 
         ::selection {
             background-color: var(--text-main);
@@ -52,22 +52,13 @@
             font-size: 16px;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
         a {
             color: var(--text-main);
             text-decoration: none;
             transition: all 0.2s ease;
-        }
-
-        a:hover {
-            color: var(--text-muted);
-        }
-
-        h1, h2, h3, h4, strong {
-            color: var(--text-main);
-            font-weight: 500;
         }
 
         /* === TYPOGRAPHY & UTILS === */
@@ -88,36 +79,19 @@
             fill: none;
         }
 
-        .icon-sm {
-            width: 14px;
-            height: 14px;
-        }
-
-        .section-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 99px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-main);
-            margin-bottom: 2rem;
-            background: var(--surface);
-        }
+        .icon-sm { width: 14px; height: 14px; }
 
         .badge {
             display: inline-flex;
             align-items: center;
-            padding: 0.15rem 0.5rem;
+            padding: 0.25rem 0.6rem;
             background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
+            border-radius: 99px;
             font-size: 0.75rem;
             color: var(--text-main);
             white-space: nowrap;
+            letter-spacing: 0.05em;
         }
 
         /* === LAYOUT & GRID === */
@@ -127,22 +101,23 @@
             padding: 0 1.5rem;
         }
 
-        section {
-            padding: 6rem 0;
-        }
+        section { padding: 8rem 0; }
 
         /* === HEADER / NAV === */
         header.nav-header {
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
             z-index: 100;
             height: var(--nav-height);
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
+            transition: transform 0.3s ease;
         }
 
         .nav-content {
@@ -155,30 +130,49 @@
         .nav-logo {
             font-weight: 600;
             letter-spacing: -0.02em;
+            font-size: 1.1rem;
         }
 
         /* === HERO === */
         .hero {
-            padding: 8rem 0 4rem 0;
+            padding: 12rem 0 6rem 0;
+            position: relative;
+        }
+
+        /* Jemný background glow v hrdinovi */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            pointer-events: none;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            line-height: 1.1;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.05;
             letter-spacing: -0.04em;
             font-weight: 600;
             margin-bottom: 1.5rem;
+            color: var(--text-main);
         }
 
         .hero p {
             font-size: 1.125rem;
             max-width: 650px;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-muted);
         }
 
         .hero-actions {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .btn-primary {
@@ -187,122 +181,185 @@
             gap: 0.5rem;
             background: var(--text-main);
             color: var(--bg);
-            padding: 0.6rem 1.25rem;
+            padding: 0.75rem 1.5rem;
             border-radius: var(--radius-sm);
             font-weight: 500;
             font-size: 0.875rem;
-            transition: opacity 0.2s;
+            transition: transform 0.2s, opacity 0.2s;
         }
 
-        .btn-primary:hover { opacity: 0.9; color: var(--bg); }
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            color: var(--bg);
+        }
 
         .btn-secondary {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: transparent;
+            background: rgba(255,255,255,0.03);
             color: var(--text-main);
-            padding: 0.6rem 1.25rem;
+            padding: 0.75rem 1.5rem;
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             font-weight: 500;
             font-size: 0.875rem;
+            transition: all 0.2s;
         }
 
-        .btn-secondary:hover { background: var(--surface); }
-
-        /* === PROJECTS === */
-        .projects-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 4rem;
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-2px);
         }
 
-        .project-card {
+        /* === INTERACTIVE GLOW CARDS (Vercel/Linear style) === */
+        .glow-card {
+            position: relative;
             background-color: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             overflow: hidden;
-            transition: border-color 0.3s ease;
         }
 
-        .project-card:hover {
-            border-color: var(--border-hover);
+        .glow-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit;
+            padding: 2px; /* Šířka border glow efektu */
+            background: radial-gradient(
+                800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+                var(--border-glow),
+                transparent 40%
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
-        .project-img {
-            width: 100%;
-            border-bottom: 1px solid var(--border);
-            background-color: #050505;
+        .glow-card:hover::before {
+            opacity: 1;
         }
 
-        .project-img img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
+        /* === NEO FM PROJECT === */
         .project-content {
-            padding: 2.5rem;
+            padding: 3rem;
+            position: relative;
+            z-index: 1;
         }
+
+        /* CSS TUI Terminal Mockup */
+        .tui-window {
+            margin: -3rem -3rem 3rem -3rem;
+            background: #050505;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .tui-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tui-dots {
+            display: flex;
+            gap: 6px;
+            margin-right: 1.5rem;
+        }
+
+        .tui-dots span {
+            width: 10px; height: 10px; border-radius: 50%;
+        }
+        .tui-dots span:nth-child(1) { background: #ff5f56; }
+        .tui-dots span:nth-child(2) { background: #ffbd2e; }
+        .tui-dots span:nth-child(3) { background: #27c93f; }
+
+        .tui-body {
+            padding: 1.5rem;
+            color: #d4d4d4;
+            line-height: 1.6;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tui-line span.path { color: #3b82f6; }
+        .tui-line span.cmd { color: #22c55e; }
+        .tui-line span.arg { color: #a1a1aa; }
 
         .project-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .project-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
             letter-spacing: -0.02em;
         }
 
         .project-desc {
-            margin-bottom: 2rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
             line-height: 1.7;
+            margin-bottom: 2.5rem;
+            color: var(--text-muted);
+            max-width: 800px;
         }
 
-        /* Modern Feature Grid inside Projects */
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
         }
 
         .feature-item {
             display: flex;
-            gap: 1rem;
-            align-items: flex-start;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.04);
         }
 
         .feature-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             background: var(--bg);
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             color: var(--text-main);
-            flex-shrink: 0;
         }
 
         .feature-text h4 {
-            font-size: 0.9rem;
-            margin-bottom: 0.2rem;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
         }
 
         .feature-text p {
             font-size: 0.85rem;
             color: var(--text-muted);
-            line-height: 1.4;
         }
 
         /* === TECH STACK === */
@@ -313,58 +370,111 @@
         }
 
         .tech-card {
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            background: var(--surface);
+            padding: 2rem;
+            z-index: 1; /* For glow effect */
         }
 
         .tech-card-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             color: var(--text-main);
             font-weight: 500;
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border);
+            font-size: 1.1rem;
         }
 
         .tech-list {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 1rem;
         }
 
         .tech-item {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+        
+        .tech-card:hover .tech-item { color: var(--text-main); }
+
+        /* === CONTACT SECTION === */
+        .contact-section {
+            text-align: center;
+            padding: 10rem 0;
+            border-top: 1px solid var(--border);
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 70%);
+        }
+
+        .contact-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            padding: 1rem 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: scale(1.05);
+            border-color: #555;
+            box-shadow: 0 10px 30px -10px rgba(255,255,255,0.1);
         }
 
         /* === FOOTER === */
         footer {
+            padding: 2rem 0;
             border-top: 1px solid var(--border);
-            padding: 3rem 0;
-            background: var(--surface);
+            text-align: center;
         }
 
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* === ANIMATION CLASSES === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered delays for Hero */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
 
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
-            .hero { padding: 4rem 0; }
+            .hero { padding: 8rem 0 4rem 0; }
             .project-content { padding: 1.5rem; }
-            .footer-content {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1.5rem;
-            }
+            .tui-window { margin: -1.5rem -1.5rem 2rem -1.5rem; }
+            .project-header { flex-direction: column; gap: 1rem; }
+            .contact-item { font-size: 1rem; width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -378,7 +488,7 @@
                 TOMÁŠ
             </div>
             <div class="mono text-sm flex items-center gap-2">
-                <span style="display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%;"></span>
+                <span style="display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%; box-shadow: 0 0 10px #10b981;"></span>
                 SYSTEM DEV
             </div>
         </div>
@@ -388,131 +498,108 @@
         <!-- HERO -->
         <section class="hero">
             <div class="container">
-                <h1>Building core systems & <br>low-level abstractions.</h1>
-                <p>Zaměřuji se na vývoj v <strong>Rustu</strong>, architekturu operačních systémů (Linux) a tvorbu nástrojů od samotných základů s absolutní kontrolou nad pamětí a maximálním výkonem.</p>
-                <div class="hero-actions">
+                <h1 class="reveal active">Building core systems & <br>low-level abstractions.</h1>
+                <p class="reveal active delay-1">Zaměřuji se na vývoj v <strong>Rustu</strong>, architekturu operačních systémů a tvorbu nástrojů od samotných základů s absolutní kontrolou nad pamětí a maximálním výkonem.</p>
+                <div class="hero-actions reveal active delay-2">
                     <a href="#projects" class="btn-primary">
-                        Prohlédnout projekty
+                        Zobrazit projekt
                         <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
                     </a>
-                    <a href="#stack" class="btn-secondary">
-                        Tech Stack
+                    <a href="#contact" class="btn-secondary">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        Kontakt
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- PROJECTS -->
+        <!-- PROJECT: NeoFM -->
         <section id="projects">
-            <div class="container">
-                <div class="section-tag mono">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                    Vybrané Projekty
+            <div class="container reveal">
+                <div class="badge mono" style="margin-bottom: 2rem;">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" style="margin-right:6px;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                    Hlavní Projekt
                 </div>
                 
-                <div class="projects-grid">
-                    
-                    <!-- PROJECT 1: NeoFM -->
-                    <div class="project-card">
-                        <div class="project-img">
-                            <img src="https://private-user-images.githubusercontent.com/281020145/586823343-83f51e02-c2e1-4141-ae52-982a64927d86.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Nzc4MzMzMzYsIm5iZiI6MTc3NzgzMzAzNiwicGF0aCI6Ii8yODEwMjAxNDUvNTg2ODIzMzQzLTgzZjUxZTAyLWMyZTEtNDE0MS1hZTUyLTk4MmE2NDkyN2Q4Ni5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwNTAzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDUwM1QxODMwMzZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wYmZlMmNlMTI2YmY2YWMxMzcxOGM5N2Q4N2U1NmY2ZWQ2MTAzZTQ2YmU3MzI2NWZlNzIzZGJkOTY3ZTBkYWVlJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.N-iAmthhMoQO478VcN6THQDU8Bdih5lZmOgC2087hAI" alt="Neo File Manager TUI">
-                        </div>
-                        <div class="project-content">
-                            <div class="project-header">
-                                <div>
-                                    <h3 class="project-title">Neo File Manager (nfm)</h3>
-                                    <div class="flex gap-2">
-                                        <span class="badge mono">Rust</span>
-                                        <span class="badge mono">Linux</span>
-                                        <span class="badge mono">Windows</span>
-                                    </div>
-                                </div>
-                                <a href="https://github.com/tomas-gihub27/nfm" target="_blank" rel="noopener noreferrer" class="btn-secondary mono">
-                                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                                    GitHub
-                                </a>
+                <div class="glow-card project-card">
+                    <div class="project-content">
+                        
+                        <!-- TUI Mockup instead of Image -->
+                        <div class="tui-window">
+                            <div class="tui-header">
+                                <div class="tui-dots"><span></span><span></span><span></span></div>
+                                <div class="mono text-muted">tomas@linux: ~/projects/nfm</div>
                             </div>
-                            <p class="project-desc">
-                                NeoFM je moderní TUI správce souborů napsaný v Rustu. Je bleskově rychlý a navržený tak, aby byl jednoduše ovladatelný pouze pomocí šipek – při procházení složek téměř nemusíte pohnout rukou. Celý vzhled je velmi moderní, podporuje práci ve více kartách a obsahuje přehled typu "Tento počítač" pro rychlý přístup k diskům. Je to nástroj, který dennodenně používám a extrémně mi usnadnil život.
-                            </p>
-
-                            <div class="feature-grid">
-                                <div class="feature-item">
-                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></div>
-                                    <div class="feature-text">
-                                        <h4>Profesionální Editor</h4>
-                                        <p>Integrovaný textový editor se zvýrazněním syntaxe, skoky na konec řádku a dalšími profi funkcemi.</p>
-                                    </div>
-                                </div>
-                                <div class="feature-item">
-                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></div>
-                                    <div class="feature-text">
-                                        <h4>Pokročilé Nástroje</h4>
-                                        <p>Nativní podpora pro kompresi archivů, wget pro stahování, rychlý git clone a úpravy práv (chmod).</p>
-                                    </div>
-                                </div>
-                                <div class="feature-item">
-                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
-                                    <div class="feature-text">
-                                        <h4>Bezpečnost</h4>
-                                        <p>Vestavěné šifrování souborů přímo v rozhraní správce bez nutnosti externích nástrojů.</p>
-                                    </div>
-                                </div>
+                            <div class="tui-body">
+                                <div class="tui-line"><span class="path">~/projects/nfm</span> <span class="cmd">➜</span> <span class="arg">./target/release/nfm</span></div>
+                                <br>
+                                <div><span style="color:#10b981">✓</span> Initializing Async I/O runtime...</div>
+                                <div><span style="color:#10b981">✓</span> Loading file system drivers...</div>
+                                <div><span style="color:#10b981">✓</span> TUI Interface mounted successfully.</div>
+                                <br>
+                                <div style="color:#60a5fa">Neo File Manager (v2.0) is running.</div>
+                                <div class="blinking-cursor" style="display:inline-block; width:8px; height:15px; background:#fff; margin-top:10px; animation: blink 1s step-end infinite;"></div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- PROJECT 2: Axis -->
-                    <div class="project-card">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <div>
-                                    <h3 class="project-title">Axis (ax) Language</h3>
-                                    <div class="flex gap-2">
-                                        <span class="badge mono">Self-Hosted</span>
-                                        <span class="badge mono">Compiler Design</span>
-                                        <span class="badge mono">Low-Level</span>
-                                    </div>
+                        <div class="project-header">
+                            <div>
+                                <h3 class="project-title">Neo File Manager (nfm)</h3>
+                                <div class="flex gap-2" style="margin-bottom: 1rem;">
+                                    <span class="badge mono">Rust</span>
+                                    <span class="badge mono">Linux</span>
+                                    <span class="badge mono">Windows</span>
                                 </div>
                             </div>
-                            <p class="project-desc">
-                                Nízkoúrovňový programovací jazyk původně vytvořený v Rustu, dnes plně self-hosted (napsán sám v sobě). Jazyk funguje na striktním principu knihoven – sám o sobě neumí nic jiného než základní práci s pamětí a volání systémových funkcí (syscalls, print).
-                            </p>
+                            <a href="https://github.com/tomas-gihub27/nfm" target="_blank" rel="noopener noreferrer" class="btn-secondary mono">
+                                <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                Zobrazit kód
+                            </a>
+                        </div>
+                        
+                        <p class="project-desc">
+                            NeoFM je moderní TUI správce souborů napsaný v Rustu pro Linux a Windows. Je bleskově rychlý a navržený tak, aby byl plně ovladatelný jen pomocí šipek – při procházení systému nemusíš skoro pohnout rukou z klávesnice. Nabízí moderní vzhled, podporu více karet a rozhraní typu "Tento počítač". Nástroj, který používám denně a který mi extrémně usnadnil život.
+                        </p>
 
-                            <div class="feature-grid">
-                                <div class="feature-item">
-                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
-                                    <div class="feature-text">
-                                        <h4>Smart Kompilátor</h4>
-                                        <p>Při kompilaci si překladač z knihoven vytáhne exaktně jen ty funkce, které kód reálně potřebuje.</p>
-                                    </div>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></div>
+                                <div class="feature-text">
+                                    <h4>Profesionální Editor</h4>
+                                    <p>Integrovaný textový editor se zvýrazněním syntaxe, skoky na konec řádku a profi klávesovými zkratkami.</p>
                                 </div>
-                                <div class="feature-item">
-                                    <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-                                    <div class="feature-text">
-                                        <h4>Zero Dependency</h4>
-                                        <p>Výstupem jsou extrémně malé a bleskově rychlé binární soubory s absolutně nulovými závislostmi.</p>
-                                    </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></div>
+                                <div class="feature-text">
+                                    <h4>Pokročilé Nástroje</h4>
+                                    <p>Nativní podpora pro kompresi, rychlé stahování přes wget, git clone repozitářů a úpravu práv (chmod).</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+                                <div class="feature-text">
+                                    <h4>Vestavěné Šifrování</h4>
+                                    <p>Zabezpečení a šifrování citlivých souborů přímo v rozhraní TUI bez nutnosti instalovat další software.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
 
         <!-- TECH STACK -->
         <section id="stack">
-            <div class="container">
-                <div class="section-tag mono">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+            <div class="container reveal">
+                <div class="badge mono" style="margin-bottom: 2rem;">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" style="margin-right:6px;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
                     Technický Stack
                 </div>
                 
                 <div class="tech-grid">
                     <!-- Card 1 -->
-                    <div class="tech-card">
+                    <div class="glow-card tech-card">
                         <div class="tech-card-header mono">
                             <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
                             Core Languages
@@ -524,7 +611,7 @@
                         </div>
                     </div>
                     <!-- Card 2 -->
-                    <div class="tech-card">
+                    <div class="glow-card tech-card">
                         <div class="tech-card-header mono">
                             <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
                             Systems / OS
@@ -536,7 +623,7 @@
                         </div>
                     </div>
                     <!-- Card 3 -->
-                    <div class="tech-card">
+                    <div class="glow-card tech-card">
                         <div class="tech-card-header mono">
                             <svg class="icon" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"></path></svg>
                             Tooling
@@ -550,28 +637,90 @@
                 </div>
             </div>
         </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="contact-section">
+            <div class="container reveal">
+                <div class="badge mono" style="margin-bottom: 2rem;">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24" style="margin-right:6px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    Spojení
+                </div>
+                <h2 class="contact-title">Let's build systems.</h2>
+                <p>Otevřený novým výzvám v oblasti nízkoúrovňového programování.</p>
+                
+                <div class="contact-links">
+                    <a href="mailto:tomastomas27104@gmail.com" class="contact-item mono">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        tomastomas27104@gmail.com
+                    </a>
+                    <a href="https://github.com/tomas-gihub27" target="_blank" rel="noopener noreferrer" class="contact-item mono">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                        github.com/tomas-gihub27
+                    </a>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- FOOTER -->
     <footer>
-        <div class="container footer-content">
-            <div class="mono text-sm flex items-center gap-2">
-                <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M14.83 14.83a4 4 0 1 1 0-5.66"></path></svg>
-                2026 TOMÁŠ.
-            </div>
-            <div class="flex gap-4 mono text-sm">
-                <a href="#" class="flex items-center gap-2">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                    GitHub
-                </a>
-                <a href="#" class="flex items-center gap-2">
-                    <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                    E-mail
-                </a>
-            </div>
+        <div class="container mono text-sm" style="color: var(--text-faint);">
+            © 2026 TOMÁŠ. Vytvořeno pro maximální výkon.
         </div>
     </footer>
 
+    <!-- INTERACTIVITY SCRIPTS -->
+    <script>
+        // 1. SCROLL ANIMATIONS (Intersection Observer)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 2. MOUSE GLOW EFFECT na kartách (Vercel/Linear style)
+        document.querySelectorAll('.glow-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Animace hlavičky při scrollování (lehce se zmenší blur a ohraničení)
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.nav-header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(0, 0, 0, 0.8)';
+            } else {
+                header.style.background = 'rgba(0, 0, 0, 0.6)';
+            }
+        });
+    </script>
+
+    <style>
+        /* Blinking cursor k terminálu přidaný do hlavičky přes CSS inline */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
 </body>
 </html>
 
