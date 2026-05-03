@@ -18,6 +18,7 @@
             --surface-hover: #121212;
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
+            --text-faint: #52525b;
             --border: #27272a;
             --border-glow: rgba(255, 255, 255, 0.1);
             
@@ -139,7 +140,6 @@
             position: relative;
         }
 
-        /* Jemný background glow v hrdinovi */
         .hero::before {
             content: '';
             position: absolute;
@@ -213,13 +213,14 @@
             transform: translateY(-2px);
         }
 
-        /* === INTERACTIVE GLOW CARDS (Vercel/Linear style) === */
+        /* === INTERACTIVE GLOW CARDS === */
         .glow-card {
             position: relative;
             background-color: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             overflow: hidden;
+            margin-bottom: 4rem;
         }
 
         .glow-card::before {
@@ -227,7 +228,7 @@
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             border-radius: inherit;
-            padding: 2px; /* Šířka border glow efektu */
+            padding: 2px;
             background: radial-gradient(
                 800px circle at var(--mouse-x, 0) var(--mouse-y, 0),
                 var(--border-glow),
@@ -245,24 +246,25 @@
             opacity: 1;
         }
 
-        /* === NEO FM PROJECT === */
+        /* === PROJECT CARDS & WINDOWS === */
         .project-content {
             padding: 3rem;
             position: relative;
             z-index: 1;
         }
 
-        /* CSS TUI Terminal Mockup */
-        .tui-window {
+        /* UI Windows Mockups (TUI / Code Editor) */
+        .ui-window {
             margin: -3rem -3rem 3rem -3rem;
             background: #050505;
             border-bottom: 1px solid var(--border);
             font-family: var(--font-mono);
             font-size: 0.85rem;
             border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            overflow: hidden;
         }
 
-        .tui-header {
+        .ui-header {
             display: flex;
             align-items: center;
             padding: 1rem 1.5rem;
@@ -270,32 +272,41 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .tui-dots {
+        .ui-dots {
             display: flex;
             gap: 6px;
             margin-right: 1.5rem;
         }
 
-        .tui-dots span {
-            width: 10px; height: 10px; border-radius: 50%;
-        }
-        .tui-dots span:nth-child(1) { background: #ff5f56; }
-        .tui-dots span:nth-child(2) { background: #ffbd2e; }
-        .tui-dots span:nth-child(3) { background: #27c93f; }
+        .ui-dots span { width: 10px; height: 10px; border-radius: 50%; }
+        .ui-dots span:nth-child(1) { background: #ff5f56; }
+        .ui-dots span:nth-child(2) { background: #ffbd2e; }
+        .ui-dots span:nth-child(3) { background: #27c93f; }
 
-        .tui-body {
+        .ui-body {
             padding: 1.5rem;
             color: #d4d4d4;
             line-height: 1.6;
-            height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
-        .tui-line span.path { color: #3b82f6; }
-        .tui-line span.cmd { color: #22c55e; }
-        .tui-line span.arg { color: #a1a1aa; }
+        /* TUI Specifics */
+        .ui-body.tui { height: 200px; display: flex; flex-direction: column; justify-content: center; }
+        .ui-body.tui span.path { color: #3b82f6; }
+        .ui-body.tui span.cmd { color: #22c55e; }
+        .ui-body.tui span.arg { color: #a1a1aa; }
+
+        /* Code Editor Specifics (VPL Syntax Highlighting) */
+        .ui-body.code {
+            padding: 2rem;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+        .syn-keyword { color: #f472b6; } /* Pink */
+        .syn-func { color: #60a5fa; } /* Blue */
+        .syn-string { color: #a3e635; } /* Green */
+        .syn-comment { color: #71717a; font-style: italic; } /* Gray */
+        .syn-var { color: #facc15; } /* Yellow */
+        .syn-op { color: #94a3b8; }
 
         .project-header {
             display: flex;
@@ -371,7 +382,8 @@
 
         .tech-card {
             padding: 2rem;
-            z-index: 1; /* For glow effect */
+            z-index: 1;
+            margin-bottom: 0;
         }
 
         .tech-card-header {
@@ -463,16 +475,14 @@
             transform: translateY(0);
         }
 
-        /* Staggered delays for Hero */
         .delay-1 { transition-delay: 0.1s; }
         .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; }
 
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
             .hero { padding: 8rem 0 4rem 0; }
             .project-content { padding: 1.5rem; }
-            .tui-window { margin: -1.5rem -1.5rem 2rem -1.5rem; }
+            .ui-window { margin: -1.5rem -1.5rem 2rem -1.5rem; }
             .project-header { flex-direction: column; gap: 1rem; }
             .contact-item { font-size: 1rem; width: 100%; justify-content: center; }
         }
@@ -502,7 +512,7 @@
                 <p class="reveal active delay-1">Zaměřuji se na vývoj v <strong>Rustu</strong>, architekturu operačních systémů a tvorbu nástrojů od samotných základů s absolutní kontrolou nad pamětí a maximálním výkonem.</p>
                 <div class="hero-actions reveal active delay-2">
                     <a href="#projects" class="btn-primary">
-                        Zobrazit projekt
+                        Zobrazit projekty
                         <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
                     </a>
                     <a href="#contact" class="btn-secondary">
@@ -513,24 +523,100 @@
             </div>
         </section>
 
-        <!-- PROJECT: NeoFM -->
+        <!-- PROJECTS SECTION -->
         <section id="projects">
-            <div class="container reveal">
-                <div class="badge mono" style="margin-bottom: 2rem;">
+            <div class="container">
+                <div class="badge mono reveal" style="margin-bottom: 2rem;">
                     <svg class="icon icon-sm" viewBox="0 0 24 24" style="margin-right:6px;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                    Hlavní Projekt
+                    Vybrané Projekty
                 </div>
                 
-                <div class="glow-card project-card">
+                <!-- PROJECT 1: VPL Language -->
+                <div class="glow-card project-card reveal delay-1">
                     <div class="project-content">
                         
-                        <!-- TUI Mockup instead of Image -->
-                        <div class="tui-window">
-                            <div class="tui-header">
-                                <div class="tui-dots"><span></span><span></span><span></span></div>
+                        <!-- VPL Code Editor Mockup -->
+                        <div class="ui-window">
+                            <div class="ui-header">
+                                <div class="ui-dots"><span></span><span></span><span></span></div>
+                                <div class="mono text-muted">main.vpl</div>
+                            </div>
+                            <div class="ui-body code">
+                                <div><span class="syn-comment">// Example: Modern VPL Script v1.8.0</span></div>
+                                <div><span class="syn-keyword">func</span> <span class="syn-func">diagnose</span>() {</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="syn-keyword">set</span> <span class="syn-var">ip</span> <span class="syn-op">=</span> <span class="syn-func">net_ip</span>()</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="syn-keyword">set</span> <span class="syn-var">host</span> <span class="syn-op">=</span> <span class="syn-func">net_hostname</span>()</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="syn-func">say</span> <span class="syn-string">"Host: "</span> <span class="syn-op">+</span> <span class="syn-var">host</span> <span class="syn-op">+</span> <span class="syn-string">" (IP: "</span> <span class="syn-op">+</span> <span class="syn-var">ip</span> <span class="syn-op">+</span> <span class="syn-string">")"</span></div>
+                                <br>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="syn-keyword">set</span> <span class="syn-var">cores</span> <span class="syn-op">=</span> <span class="syn-func">sys_cores</span>()</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="syn-func">say</span> <span class="syn-string">"Processing on "</span> <span class="syn-op">+</span> <span class="syn-var">cores</span> <span class="syn-op">+</span> <span class="syn-string">" CPU cores."</span></div>
+                                <div>}</div>
+                                <br>
+                                <div><span class="syn-func">diagnose</span>()</div>
+                                <br>
+                                <div><span class="syn-keyword">set</span> <span class="syn-var">items</span> <span class="syn-op">=</span> [<span class="syn-string">"Apple"</span>, <span class="syn-string">"Orange"</span>, <span class="syn-string">"Banana"</span>]</div>
+                                <div><span class="syn-keyword">for</span> <span class="syn-var">fruit</span> <span class="syn-keyword">in</span> <span class="syn-var">items</span> {</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="syn-func">say</span> <span class="syn-string">"I like "</span> <span class="syn-op">+</span> <span class="syn-var">fruit</span></div>
+                                <div>}</div>
+                            </div>
+                        </div>
+
+                        <div class="project-header">
+                            <div>
+                                <h3 class="project-title">VPL (Virtual Programming Language)</h3>
+                                <div class="flex gap-2" style="margin-bottom: 1rem; flex-wrap: wrap;">
+                                    <span class="badge mono">Statically Compiled</span>
+                                    <span class="badge mono">Zero Config</span>
+                                    <span class="badge mono">Cross-Platform</span>
+                                </div>
+                            </div>
+                            <a href="https://github.com/tomas-gihub27/vpl" target="_blank" rel="noopener noreferrer" class="btn-secondary mono">
+                                <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                Zobrazit kód
+                            </a>
+                        </div>
+                        
+                        <p class="project-desc">
+                            VPL je vysoce výkonný, staticky kompilovaný programovací jazyk navržený primárně pro Linux. Vyznačuje se moderní syntaxí, vědeckými funkcemi a profesionálním kompilátorem, který na výstupu produkuje miniaturní, samostatně spustitelné nativní binárky (Linux i Windows .exe).
+                        </p>
+
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
+                                <div class="feature-text">
+                                    <h4>Inteligentní Knihovní Systém</h4>
+                                    <p>Žádné "import" prohlášení. Kompilátor automaticky prohledává <code>.vplib</code> soubory a linkuje jen to, co reálně zavoláš (Zero config).</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+                                <div class="feature-text">
+                                    <h4>Tree-Shaking Optimizer</h4>
+                                    <p>Industriální build pipeline s přesností na mikrosekundy zajišťuje, že finální binárky obsahují striktně jen ty moduly, které se v kódu využívají.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+                                <div class="feature-text">
+                                    <h4>Nativní TUI & GUI podpora</h4>
+                                    <p>Pokročilý engine pro tvorbu profi terminálových rozhraní (stíny, okna) i moderních desktopových dialogů skrze vestavěný wrapper Zenity.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROJECT 2: NeoFM -->
+                <div class="glow-card project-card reveal delay-1">
+                    <div class="project-content">
+                        
+                        <!-- TUI Mockup -->
+                        <div class="ui-window">
+                            <div class="ui-header">
+                                <div class="ui-dots"><span></span><span></span><span></span></div>
                                 <div class="mono text-muted">tomas@linux: ~/projects/nfm</div>
                             </div>
-                            <div class="tui-body">
+                            <div class="ui-body tui">
                                 <div class="tui-line"><span class="path">~/projects/nfm</span> <span class="cmd">➜</span> <span class="arg">./target/release/nfm</span></div>
                                 <br>
                                 <div><span style="color:#10b981">✓</span> Initializing Async I/O runtime...</div>
@@ -558,7 +644,7 @@
                         </div>
                         
                         <p class="project-desc">
-                            NeoFM je moderní TUI správce souborů napsaný v Rustu pro Linux a Windows. Je bleskově rychlý a navržený tak, aby byl plně ovladatelný jen pomocí šipek – při procházení systému nemusíš skoro pohnout rukou z klávesnice. Nabízí moderní vzhled, podporu více karet a rozhraní typu "Tento počítač". Nástroj, který používám denně a který mi extrémně usnadnil život.
+                            NeoFM je moderní TUI správce souborů napsaný v Rustu. Je bleskově rychlý a navržený tak, aby byl plně ovladatelný jen pomocí šipek – při procházení systému nemusíš skoro pohnout rukou z klávesnice. Nabízí moderní vzhled, podporu více karet a rozhraní typu "Tento počítač".
                         </p>
 
                         <div class="feature-grid">
@@ -586,6 +672,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
 
@@ -598,7 +685,6 @@
                 </div>
                 
                 <div class="tech-grid">
-                    <!-- Card 1 -->
                     <div class="glow-card tech-card">
                         <div class="tech-card-header mono">
                             <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
@@ -606,11 +692,10 @@
                         </div>
                         <div class="tech-list mono text-sm">
                             <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg> Rust</div>
-                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg> C</div>
-                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg> Assembly (x86_64)</div>
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg> C / Assembly</div>
+                            <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg> VPL (Creator)</div>
                         </div>
                     </div>
-                    <!-- Card 2 -->
                     <div class="glow-card tech-card">
                         <div class="tech-card-header mono">
                             <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
@@ -622,7 +707,6 @@
                             <div class="tech-item"><svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg> POSIX API</div>
                         </div>
                     </div>
-                    <!-- Card 3 -->
                     <div class="glow-card tech-card">
                         <div class="tech-card-header mono">
                             <svg class="icon" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"></path></svg>
@@ -671,7 +755,7 @@
 
     <!-- INTERACTIVITY SCRIPTS -->
     <script>
-        // 1. SCROLL ANIMATIONS (Intersection Observer)
+        // 1. SCROLL ANIMATIONS
         const observerOptions = {
             root: null,
             rootMargin: '0px',
@@ -691,7 +775,7 @@
             observer.observe(el);
         });
 
-        // 2. MOUSE GLOW EFFECT na kartách (Vercel/Linear style)
+        // 2. MOUSE GLOW EFFECT
         document.querySelectorAll('.glow-card').forEach(card => {
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
@@ -703,7 +787,7 @@
             });
         });
 
-        // Animace hlavičky při scrollování (lehce se zmenší blur a ohraničení)
+        // HIDE NAV BLUR ON TOP
         window.addEventListener('scroll', () => {
             const header = document.querySelector('.nav-header');
             if (window.scrollY > 50) {
@@ -715,7 +799,6 @@
     </script>
 
     <style>
-        /* Blinking cursor k terminálu přidaný do hlavičky přes CSS inline */
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
